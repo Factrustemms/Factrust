@@ -1,0 +1,68 @@
+
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <title>Tableau de bord - Factrust</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <header>
+        <img src="logo_factrust_transparent.png" alt="Logo Factrust" class="logo">
+        <nav>
+            <ul>
+                <li><a href="index.html">Accueil</a></li>
+                <li><a href="analyse.html">Accès plateforme</a></li>
+                <li><a href="inscription.html">Créer un compte</a></li>
+                <li><a href="connexion.html">Se connecter</a></li>
+                <li><a href="#">Contact</a></li>
+            </ul>
+        </nav>
+    </header>
+
+    <main class="dashboard">
+        <h1>Bienvenue sur votre espace personnel, Maître Dupont</h1>
+
+        <section class="bloc">
+            <h2>📁 Mes fichiers déposés</h2>
+            <ul>
+                <li>Conclusions_A.pdf – 12 avril 2025</li>
+                <li>Conclusions_B.pdf – 13 avril 2025</li>
+            </ul>
+        </section>
+
+        <section class="bloc">
+            <h2>➕ Déposer un nouveau dossier</h2>
+            <button onclick="alert('Simulation d'upload')">Déposer des conclusions</button>
+        </section>
+
+        <section class="bloc">
+            <h2>🧠 Résumés générés</h2>
+            <ul>
+                <li><strong>Dossier A vs B</strong> – Résumé disponible – <a href="#">Voir</a></li>
+            </ul>
+        </section>
+
+        <section class="bloc">
+            <h2>🧑‍⚖️ Suivi du traitement</h2>
+            <p><strong>Dossier A vs B</strong> – Statut : <span style="color: green;">Traité</span></p>
+        </section>
+
+        <section class="bloc">
+            <h2>⚙️ Mon profil</h2>
+            <p>Email : dupont@cabinet.fr</p>
+            <p>Abonnement : Professionnel – 29,99 €/mois</p>
+        </section>
+
+        <div style="text-align:center; margin-top:2em;">
+            <button onclick="alert('Déconnexion simulée')">🔓 Se déconnecter</button>
+        </div>
+    </main>
+
+    <footer>
+        <p>© 2025 Factrust — Tous droits réservés</p>
+        <p>📧 contact@factrust.fr | 📞 01 00 00 00 00</p>
+        <p><a href="#">Mentions légales</a> • <a href="#">CGU</a></p>
+    </footer>
+</body>
+</html>
