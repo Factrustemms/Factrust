@@ -9,7 +9,6 @@ app = Flask(__name__, static_folder='static', static_url_path='/static')
 API_KEY = os.getenv("OPENROUTER_API_KEY")
 print(f"[DEBUG] Clé API reçue : {API_KEY}")
 
-
 def extract_text_from_pdf(file):
     doc = fitz.open(stream=file.read(), filetype="pdf")
     text = ""
