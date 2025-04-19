@@ -36,8 +36,8 @@ document.getElementById('analyzeForm').addEventListener('submit', async function
 
     // Générer le contenu du tableau
     const maxRows = Math.max(
-      analyse.faits_reconnus.length,
-      analyse.points_divergents.length,
+      analyse.faits_reconnus_par_les_deux_parties.length,
+      analyse.points_divergents_entre_les_parties.length,
       analyse.hypotheses_sur_la_realite_factuelle.length
     );
 
@@ -46,12 +46,12 @@ document.getElementById('analyzeForm').addEventListener('submit', async function
 
       // Faits reconnus
       const tdFaits = document.createElement('td');
-      tdFaits.textContent = analyse.faits_reconnus[i] || '';
+      tdFaits.textContent = analyse.faits_reconnus_par_les_deux_parties[i] || '';
       row.appendChild(tdFaits);
 
       // Points divergents
       const tdDivergents = document.createElement('td');
-      tdDivergents.textContent = analyse.points_divergents[i] || '';
+      tdDivergents.textContent = analyse.points_divergents_entre_les_parties[i] || '';
       row.appendChild(tdDivergents);
 
       // Hypothèses
