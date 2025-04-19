@@ -4,11 +4,11 @@
 <head>
     <meta charset="UTF-8">
     <title>Tableau de bord - Factrust</title>
-    <link rel="stylesheet" href="style.css">
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/styles.css') }}">
 </head>
 <body>
     <header>
-        <img src="logo_factrust_transparent.png" alt="Logo Factrust" class="logo">
+        <img src="{{ url_for('static', filename='images/logo_factrust_transparent.png') }}" alt="Logo Factrust">
         <nav>
             <ul>
                 <li><a href="index.html">Accueil</a></li>
