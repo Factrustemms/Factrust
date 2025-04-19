@@ -1,12 +1,18 @@
 document.addEventListener("DOMContentLoaded", () => {
+    console.log("main.js chargé ✅");
+
     const form = document.getElementById("analyzeForm");
+    const resultContainer = document.getElementById("result");
     const loader = document.getElementById("loader");
     const exportBtn = document.getElementById("exportPDFBtn");
-    const iaResultsBody = document.getElementById("iaResultsBody");
+    const tableBody = document.getElementById("iaResultsBody");
 
     form.addEventListener("submit", async (e) => {
-        e.preventDefault();
-        iaResultsBody.innerHTML = "";
+        e.preventDefault(); // ⚠️ Important pour empêcher le rechargement
+        console.log("Formulaire soumis 🚀");
+
+        resultContainer.innerHTML = "";
+        tableBody.innerHTML = "";
         loader.style.display = "block";
         exportBtn.style.display = "none";
 
@@ -26,7 +32,7 @@ document.addEventListener("DOMContentLoaded", () => {
         try {
             const response = await fetch("/analyze", {
                 method: "POST",
-                body: formData
+                body: formData,
             });
 
             if (!response.ok) throw new Error("Erreur serveur");
@@ -35,90 +41,72 @@ document.addEventListener("DOMContentLoaded", () => {
             loader.style.display = "none";
 
             try {
-                const jsonText = data.result.match(/```json([\s\S]*?)```/);
-                const cleanJson = jsonText ? jsonText[1].trim() : data.result;
+                const parsed = JSON.parse(data.result);
+                console.log("Données analysées :", parsed);
 
-                const parsed = JSON.parse(cleanJson);
-                const comparaison = parsed.comparaison || parsed;
+                const faitsReconnu = parsed.comparaison?.faits_reconnus || [];
+                const divergences = parsed.comparaison?.points_divergents || [];
+                const hypotheses = parsed.comparaison?.hypothèses_sur_la_réalité_factuelle || [];
 
-                const maxRows = Math.max(
-                    comparaison.faits_reconnus?.length || 0,
-                    comparaison.points_divergents?.length || 0,
-                    comparaison.hypothèses_sur_la_réalité_factuelle?.length || 0
-                );
+                const maxRows = Math.max(faitsReconnu.length, divergences.length, hypotheses.length);
 
                 for (let i = 0; i < maxRows; i++) {
                     const row = document.createElement("tr");
 
-                    // ✅ Faits reconnus
-                    const factCell = document.createElement("td");
-                    factCell.textContent = comparaison.faits_reconnus?.[i] || "";
-                    row.appendChild(factCell);
+                    // Fait reconnu
+                    const fr = document.createElement("td");
+                    fr.textContent = faitsReconnu[i] || "";
+                    row.appendChild(fr);
 
-                    // ⚠️ Faits contestés
-                    const contestedCell = document.createElement("td");
-                    if (comparaison.points_divergents?.[i]) {
-                        const pd = comparaison.points_divergents[i];
-                        contestedCell.innerHTML = `
-                            <strong>${pd.fait}</strong><br>
-                            <em>Partie A :</em> ${pd.requérant}<br>
-                            <em>Partie B :</em> ${pd.défenderesse}
-                        `;
+                    // Divergence
+                    const div = document.createElement("td");
+                    if (divergences[i]) {
+                        const d = divergences[i];
+                        div.innerHTML = `<strong>${d.fait}</strong><br/><em>${d.requérant}</em><br/>${d.défenderesse}`;
                     }
-                    row.appendChild(contestedCell);
+                    row.appendChild(div);
 
-                    // 💡 Hypothèses
-                    const hypoCell = document.createElement("td");
-                    if (comparaison.hypothèses_sur_la_réalité_factuelle?.[i]) {
-                        const h = comparaison.hypothèses_sur_la_réalité_factuelle[i];
-                        hypoCell.innerHTML = `
-                            <strong>${h.hypothèse}</strong><br>
-                            <em>Fondement :</em> ${h.fondement_juridique}
-                        `;
+                    // Hypothèse
+                    const hypo = document.createElement("td");
+                    if (hypotheses[i]) {
+                        const h = hypotheses[i];
+                        hypo.innerHTML = `<strong>${h.hypothèse}</strong><br/><em>${h.fondement_juridique}</em>`;
                     }
-                    row.appendChild(hypoCell);
+                    row.appendChild(hypo);
 
-                    iaResultsBody.appendChild(row);
+                    tableBody.appendChild(row);
                 }
 
                 exportBtn.style.display = "inline-block";
 
             } catch (err) {
-                console.error("Erreur parsing JSON IA :", err);
-                iaResultsBody.innerHTML = `<tr><td colspan="3"><pre>${data.result}</pre></td></tr>`;
+                console.error("Erreur parsing JSON : ", err);
+                resultContainer.innerHTML = `<pre>${data.result}</pre>`;
                 exportBtn.style.display = "inline-block";
             }
 
         } catch (error) {
             console.error("Erreur lors de l’analyse :", error);
-            iaResultsBody.innerHTML = "<tr><td colspan='3'>Erreur lors de l’analyse.</td></tr>";
+            resultContainer.innerHTML = "Erreur lors de l’analyse.";
             loader.style.display = "none";
             exportBtn.style.display = "none";
         }
     });
 
-    exportBtn.addEventListener("click", async () => {
+    exportBtn.addEventListener("click", () => {
         const { jsPDF } = window.jspdf;
-        const table = document.getElementById("iaResultsTable");
+        const doc = new jsPDF();
 
-        if (!table) {
-            alert("Aucun résultat à exporter.");
-            return;
+        doc.text("Résultats de l’analyse Factrust", 10, 10);
+
+        // Récupérer le tableau pour export
+        const table = document.getElementById("iaResultsTable");
+        if (table) {
+            doc.autoTable({ html: "#iaResultsTable", startY: 20 });
+        } else {
+            doc.text("Aucun tableau à exporter.", 10, 20);
         }
 
-        // Scroll au haut du tableau avant capture
-        table.scrollIntoView();
-
-        const canvas = await html2canvas(table, { scale: 2 });
-
-        const imgData = canvas.toDataURL("image/png");
-        const pdf = new jsPDF("p", "mm", "a4");
-
-        const imgProps = pdf.getImageProperties(imgData);
-        const pdfWidth = pdf.internal.pageSize.getWidth();
-        const pdfHeight = (imgProps.height * pdfWidth) / imgProps.width;
-
-        pdf.addImage(imgData, "PNG", 0, 10, pdfWidth, pdfHeight);
-        pdf.save("analyse_factrust.pdf");
+        doc.save("analyse_factrust.pdf");
+    });
 });
-
