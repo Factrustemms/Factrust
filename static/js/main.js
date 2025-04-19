@@ -101,6 +101,11 @@ document.addEventListener("DOMContentLoaded", () => {
         const { jsPDF } = window.jspdf;
         const table = document.getElementById("iaResultsTable");
 
+        if (!table) {
+            alert("Aucun résultat à exporter.");
+            return;
+        }
+
         // Scroll au haut du tableau avant capture
         table.scrollIntoView();
 
