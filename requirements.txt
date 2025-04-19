@@ -1,7 +1,6 @@
 flask
 Flask
 gunicorn
-json
 openai
 PyMuPDF
 requests
