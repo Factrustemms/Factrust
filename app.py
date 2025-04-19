@@ -90,7 +90,7 @@ Présente ta réponse en format JSON structuré.
         return jsonify({"error": "Erreur API"}), 500
 
     result = response.json()["choices"][0]["message"]["content"]
-    return jsonify({"result": result})
+    return jsonify({"analyse": json.loads(result)})
 
 if __name__ == '__main__':
     app.run(debug=True)
