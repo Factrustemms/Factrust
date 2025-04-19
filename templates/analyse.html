@@ -44,13 +44,20 @@
     <button id="exportPDFBtn" style="display: none; margin-top: 15px;">📄 Exporter les résultats en PDF</button>
   </section>
 
-  <section class="timeline-section">
-    <h2>Timeline des faits</h2>
-    <div class="timeline">
-      <div class="fact recognized">✅ Fait reconnu</div>
-      <div class="fact contested">⚠️ Fait contesté</div>
-      <div class="fact hypothesis">💡 Hypothèse probable</div>
-    </div>
+  <section class="results-section">
+    <h2>Tableau comparatif des faits</h2>
+    <table id="iaResultsTable">
+      <thead>
+        <tr>
+          <th>✅ Faits reconnus</th>
+          <th>⚠️ Faits contestés</th>
+          <th>💡 Hypothèses probables</th>
+        </tr>
+      </thead>
+      <tbody id="iaResultsBody">
+        <!-- Données IA injectées ici -->
+      </tbody>
+    </table>
   </section>
 
   <section class="results-section">
