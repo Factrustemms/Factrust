@@ -1,8 +1,9 @@
-from flask import Flask, render_template, request, jsonify, send_file
+from flask import Flask, render_template, request, jsonify, send_file, send_from_directory
 from openai import OpenAI
 import fitz  # PyMuPDF
+import os
 
-app = Flask(__name__)
+app = Flask(__name__, static_folder='static', static_url_path='/static')
 
 client = OpenAI(
     api_key="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",
@@ -17,6 +18,10 @@ def extract_text_from_pdf(file):
     return text
 
 # === ROUTES FRONTEND ===
+@app.route('/static/<path:path>')
+def send_static(path):
+    return send_from_directory('static', path)
+
 @app.route('/')
 def index():
     return render_template('index.html')
