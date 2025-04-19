@@ -56,38 +56,38 @@ def analyze():
     text_b = extract_text_from_pdf(pdf_b)
 
     prompt = f'''
-Tu es un juriste assistant spécialisé en droit français.
-Voici deux extraits de conclusions adverses :
---- Partie A ---
-{text_a}
---- Partie B ---
-{text_b}
-Ta mission : comparer ces textes pour établir un tableau en 3 colonnes :
-1. Faits reconnus par les deux parties
-2. Points divergents entre les parties
-3. Hypothèses sur la réalité factuelle
-Appuie-toi sur le Code civil, Légifrance, le Code pénal, la jurisprudence majoritaire, les principes issus de Légifrance, Doctrine.fr ou Dalloz.
-Présente ta réponse au format JSON strict, avec cette structure exacte :
-
-{
-  "comparaison": {
-    "faits_reconnus": [...],
-    "points_divergents": [
-      {
-        "fait": "...",
-        "partie_a": "...",
-        "partie_b": "..."
-      }
-    ],
-    "hypotheses_sur_la_realite_factuelle": [
-      {
-        "hypothese": "...",
-        "fondement": "..."
-      }
-    ]
-  }
-}
-'''
+    Tu es un juriste assistant spécialisé en droit français.
+    Voici deux extraits de conclusions adverses :
+    --- Partie A ---
+    {text_a}
+    --- Partie B ---
+    {text_b}
+    Ta mission : comparer ces textes pour établir un tableau en 3 colonnes :
+    1. Faits reconnus par les deux parties
+    2. Points divergents entre les parties
+    3. Hypothèses sur la réalité factuelle
+    Appuie-toi sur le Code civil, Légifrance, le Code pénal, la jurisprudence majoritaire, les principes issus de Légifrance, Doctrine.fr ou Dalloz.
+    Présente ta réponse au format JSON strict, avec cette structure exacte :
+    
+    {
+      "comparaison": {
+        "faits_reconnus": [...],
+        "points_divergents": [
+          {
+            "fait": "...",
+            "partie_a": "...",
+            "partie_b": "..."
+          }
+        ],
+        "hypotheses_sur_la_realite_factuelle": [
+          {
+            "hypothese": "...",
+            "fondement": "..."
+          }
+        ]
+      }
+    }
+    '''
 
     headers = {
         "Authorization": f"Bearer {API_KEY}",
