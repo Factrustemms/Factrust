@@ -20,7 +20,7 @@ document.getElementById('analyzeForm').addEventListener('submit', async function
   formData.append('pdfB', pdfB);
 
   try {
-    const response = await fetch('/api/analyze', {
+    const response = await fetch('/analyze', {
       method: 'POST',
       body: formData
     });
