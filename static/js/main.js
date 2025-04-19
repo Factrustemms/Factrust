@@ -1,112 +1,74 @@
-document.addEventListener("DOMContentLoaded", () => {
-    console.log("main.js chargé ✅");
+document.getElementById('analyzeForm').addEventListener('submit', async function (e) {
+  e.preventDefault();
 
-    const form = document.getElementById("analyzeForm");
-    const resultContainer = document.getElementById("result");
-    const loader = document.getElementById("loader");
-    const exportBtn = document.getElementById("exportPDFBtn");
-    const tableBody = document.getElementById("iaResultsBody");
+  const pdfA = document.getElementById('pdfA').files[0];
+  const pdfB = document.getElementById('pdfB').files[0];
+  const loader = document.getElementById('loader');
+  const resultDiv = document.getElementById('result');
+  const exportBtn = document.getElementById('exportPDFBtn');
+  const tableBody = document.getElementById('iaResultsBody');
 
-    form.addEventListener("submit", async (e) => {
-        e.preventDefault(); // ⚠️ Important pour empêcher le rechargement
-        console.log("Formulaire soumis 🚀");
+  resultDiv.innerHTML = '';
+  tableBody.innerHTML = '';
+  exportBtn.style.display = 'none';
+  loader.style.display = 'block';
 
-        resultContainer.innerHTML = "";
-        tableBody.innerHTML = "";
-        loader.style.display = "block";
-        exportBtn.style.display = "none";
+  const formData = new FormData();
+  formData.append('pdfA', pdfA);
+  formData.append('pdfB', pdfB);
 
-        const pdfA = document.getElementById("pdfA").files[0];
-        const pdfB = document.getElementById("pdfB").files[0];
-
-        if (!pdfA || !pdfB) {
-            alert("Merci d’importer les deux fichiers PDF.");
-            loader.style.display = "none";
-            return;
-        }
-
-        const formData = new FormData();
-        formData.append("pdfA", pdfA);
-        formData.append("pdfB", pdfB);
-
-        try {
-            const response = await fetch("/analyze", {
-                method: "POST",
-                body: formData,
-            });
-
-            if (!response.ok) throw new Error("Erreur serveur");
-
-            const data = await response.json();
-            loader.style.display = "none";
-
-            try {
-                const parsed = data.analyse ? data.analyse : JSON.parse(data.result);
-                console.log("Données analysées :", parsed);
-
-                const faitsReconnu = parsed.comparaison?.faits_reconnus || [];
-                const divergences = parsed.comparaison?.points_divergents || [];
-                const hypotheses = parsed.comparaison?.hypothèses_sur_la_réalité_factuelle || [];
-
-                const maxRows = Math.max(faitsReconnu.length, divergences.length, hypotheses.length);
-
-                for (let i = 0; i < maxRows; i++) {
-                    const row = document.createElement("tr");
-
-                    // Fait reconnu
-                    const fr = document.createElement("td");
-                    fr.textContent = faitsReconnu[i] || "";
-                    row.appendChild(fr);
-
-                    // Divergence
-                    const div = document.createElement("td");
-                    if (divergences[i]) {
-                        const d = divergences[i];
-                        div.innerHTML = `<strong>${d.fait}</strong><br/><em>${d.requérant}</em><br/>${d.défenderesse}`;
-                    }
-                    row.appendChild(div);
-
-                    // Hypothèse
-                    const hypo = document.createElement("td");
-                    if (hypotheses[i]) {
-                        const h = hypotheses[i];
-                        hypo.innerHTML = `<strong>${h.hypothèse}</strong><br/><em>${h.fondement_juridique}</em>`;
-                    }
-                    row.appendChild(hypo);
-
-                    tableBody.appendChild(row);
-                }
-
-                exportBtn.style.display = "inline-block";
-
-            } catch (err) {
-                console.error("Erreur parsing JSON : ", err);
-                resultContainer.innerHTML = `<pre>${data.result}</pre>`;
-                exportBtn.style.display = "inline-block";
-            }
-
-        } catch (error) {
-            console.error("Erreur lors de l’analyse :", error);
-            resultContainer.innerHTML = "Erreur lors de l’analyse.";
-            loader.style.display = "none";
-            exportBtn.style.display = "none";
-        }
+  try {
+    const response = await fetch('/api/analyze', {
+      method: 'POST',
+      body: formData
     });
 
-    exportBtn.addEventListener("click", () => {
-        const { jsPDF } = window.jspdf;
-        const doc = new jsPDF();
+    if (!response.ok) {
+      throw new Error('Erreur lors de l\'analyse.');
+    }
 
-        doc.text("Résultats de l’analyse Factrust", 10, 10);
+    const data = await response.json();
+    const analyse = data.analyse;
 
-        // Récupérer le tableau pour export
-        const table = document.getElementById("iaResultsTable");
-        if (table) {
-            doc.autoTable({ html: "#iaResultsTable", startY: 20 });
-        } else {
-            doc.text("Aucun tableau à exporter.", 10, 20);
-        }
+    // Générer le contenu du tableau
+    const maxRows = Math.max(
+      analyse.faits_reconnus.length,
+      analyse.points_divergents.length,
+      analyse.hypotheses_sur_la_realite_factuelle.length
+    );
 
-        doc.save("analyse_factrust.pdf");
-    });
+    for (let i = 0; i < maxRows; i++) {
+      const row = document.createElement('tr');
+
+      // Faits reconnus
+      const tdFaits = document.createElement('td');
+      tdFaits.textContent = analyse.faits_reconnus[i] || '';
+      row.appendChild(tdFaits);
+
+      // Points divergents
+      const tdDivergents = document.createElement('td');
+      tdDivergents.textContent = analyse.points_divergents[i] || '';
+      row.appendChild(tdDivergents);
+
+      // Hypothèses
+      const tdHypotheses = document.createElement('td');
+      const hyp = analyse.hypotheses_sur_la_realite_factuelle[i];
+      if (hyp) {
+        tdHypotheses.innerHTML = `<strong>${hyp.hypothese}</strong><br><em>${hyp.fondement}</em>`;
+      } else {
+        tdHypotheses.textContent = '';
+      }
+      row.appendChild(tdHypotheses);
+
+      tableBody.appendChild(row);
+    }
+
+    // Activer le bouton PDF et cacher le loader
+    loader.style.display = 'none';
+    exportBtn.style.display = 'block';
+
+  } catch (error) {
+    loader.style.display = 'none';
+    resultDiv.innerHTML = `<p style="color: red;">❌ ${error.message}</p>`;
+  }
 });
