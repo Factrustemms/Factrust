@@ -82,6 +82,6 @@ document.getElementById('analyzeForm').addEventListener('submit', async function
 
   } catch (error) {
     loader.style.display = 'none';
-    resultDiv.innerHTML = <p style="color: red;">❌ ${error.message}</p>;
+    resultDiv.innerHTML = `<p style="color: red;">❌ ${error.message}</p>`;
   }
 });
