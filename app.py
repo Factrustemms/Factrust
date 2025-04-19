@@ -1,14 +1,12 @@
 from flask import Flask, render_template, request, jsonify, send_file, send_from_directory
-from openai import OpenAI
 import fitz  # PyMuPDF
+import requests
+import json
 import os
 
 app = Flask(__name__, static_folder='static', static_url_path='/static')
 
-client = OpenAI(
-    api_key="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",
-    base_url="https://openrouter.ai/api/v1"
-)
+API_KEY = os.getenv("OPENROUTER_API_KEY")
 
 def extract_text_from_pdf(file):
     doc = fitz.open(stream=file.read(), filetype="pdf")
@@ -71,15 +69,26 @@ Appuie-toi sur le Code civil, Légifrance, le Code pénal, la jurisprudence majo
 Présente ta réponse en format JSON structuré.
 '''
 
-    response = client.chat.completions.create(
-        model="meta-llama/llama-4-maverick:free",
-        messages=[
+    headers = {
+        "Authorization": f"Bearer {API_KEY}",
+        "Content-Type": "application/json"
+    }
+
+    payload = {
+        "model": "meta-llama/llama-4-maverick:free",
+        "messages": [
             {"role": "system", "content": "Tu es une IA juridique spécialisée dans l'analyse factuelle."},
             {"role": "user", "content": prompt}
         ]
-    )
+    }
 
-    result = response.choices[0].message.content
+    response = requests.post("https://openrouter.ai/api/v1/chat/completions", headers=headers, data=json.dumps(payload))
+
+    if response.status_code != 200:
+        print("Erreur OpenRouter :", response.text)
+        return jsonify({"error": "Erreur API"}), 500
+
+    result = response.json()["choices"][0]["message"]["content"]
     return jsonify({"result": result})
 
 if __name__ == '__main__':
