@@ -1,4 +1,3 @@
-
 <!DOCTYPE html>
 <html lang="fr">
 <head>
@@ -14,7 +13,7 @@
       <ul>
         <li><a href="index.html">Accueil</a></li>
         <li><a href="inscription.html">Créer un compte</a></li>
-<li><a href="connexion.html">Se connecter</a></li>
+        <li><a href="connexion.html">Se connecter</a></li>
         <li><a href="analyse.html">Accès plateforme</a></li>
         <li><a href="#">Contact</a></li>
       </ul>
@@ -24,10 +23,24 @@
   <section class="upload-section">
     <h1>Analyse des conclusions</h1>
     <p>Déposez ici les documents PDF de chaque partie pour visualiser les faits communs, contestés et les hypothèses probables.</p>
-    <div class="file-upload">
-      <label>📄 Partie A : <input type="file" accept=".pdf"></label>
-      <label>📄 Partie B : <input type="file" accept=".pdf"></label>
-    </div>
+
+    <!-- FORMULAIRE -->
+    <form id="analyzeForm" enctype="multipart/form-data">
+      <div class="file-upload">
+        <label>📄 Partie A :
+          <input type="file" id="pdfA" name="pdfA" accept=".pdf" required>
+        </label>
+        <label>📄 Partie B :
+          <input type="file" id="pdfB" name="pdfB" accept=".pdf" required>
+        </label>
+      </div>
+
+      <button type="submit" id="analyzeBtn">🚀 Lancer l’analyse et la modélisation !</button>
+    </form>
+
+    <!-- Résultat IA -->
+    <div id="loader" style="display: none; margin-top: 15px;">⚖️ Analyse en cours...</div>
+    <div id="result" style="margin-top: 20px;"></div>
   </section>
 
   <section class="timeline-section">
@@ -64,12 +77,13 @@
     </table>
   </section>
 
-  
   <footer>
     <p>© 2025 Factrust — Tous droits réservés</p>
     <p>📧 contact@factrust.fr | 📞 01 00 00 00 00</p>
     <p><a href="#">Mentions légales</a> • <a href="#">CGU</a> • <a href="#">LinkedIn</a></p>
   </footer>
 
+  <!-- Script JS -->
+  <script src="main.js"></script>
 </body>
 </html>
