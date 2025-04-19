@@ -30,8 +30,9 @@ document.getElementById('analyzeForm').addEventListener('submit', async function
     }
 
     const data = await response.json();
-    console.log("✅ Analyse reçue :", data.analyse)
-    const analyse = data.analyse;
+    console.log("✅ Analyse reçue :", data.analyse
+    const fullResult = JSON.parse(data.result); // On parse le JSON stringifié
+    const analyse = fullResult.comparaison_des_textes;
 
     // Générer le contenu du tableau
     const maxRows = Math.max(
