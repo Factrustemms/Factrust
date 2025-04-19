@@ -30,6 +30,7 @@ document.getElementById('analyzeForm').addEventListener('submit', async function
     }
 
     const data = await response.json();
+    console.log("✅ Analyse reçue :", data.analyse)
     const analyse = data.analyse;
 
     // Générer le contenu du tableau
