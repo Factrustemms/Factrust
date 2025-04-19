@@ -1,21 +1,20 @@
-
 <!DOCTYPE html>
 <html lang="fr">
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
   <title>Factrust - Donnez forme aux faits</title>
-  <link rel="stylesheet" href="style.css" />
+  <link rel="stylesheet" href="{{ url_for('static', filename='css/styles.css') }}" />
 </head>
 <body>
   <header>
-    <img src="logo_factrust_transparent.png" alt="Logo Factrust" class="logo"/>
+    <img src="{{ url_for('static', filename='images/logo_factrust_transparent.png') }}" alt="Logo Factrust" class="logo"/>
     <nav>
       <ul>
-        <li><a href="index.html">Accueil</a></li>
-        <li><a href="inscription.html">Créer un compte</a></li>
-<li><a href="connexion.html">Se connecter</a></li>
-        <li><a href="analyse.html">Accès plateforme</a></li>
+        <li><a href="{{ url_for('index') }}">Accueil</a></li>
+        <li><a href="{{ url_for('register') }}">Créer un compte</a></li>
+        <li><a href="{{ url_for('login') }}">Se connecter</a></li>
+        <li><a href="{{ url_for('analyze_page') }}">Accès plateforme</a></li>
         <li><a href="#">Contact</a></li>
       </ul>
     </nav>
@@ -24,7 +23,7 @@
   <section class="hero">
     <h1>Donnez forme aux faits. Clarifiez vos litiges.</h1>
     <p>Factrust modélise les faits des conclusions adverses pour une meilleure lecture des responsabilités.</p>
-    <a href="analyse.html" class="cta-button">Accéder à la plateforme</a>
+    <a href="{{ url_for('analyze_page') }}" class="cta-button">Accéder à la plateforme</a>
   </section>
 
   <section class="how-it-works">
@@ -54,12 +53,10 @@
     </ul>
   </section>
 
-  
   <footer>
     <p>© 2025 Factrust — Tous droits réservés</p>
     <p>📧 contact@factrust.fr | 📞 01 00 00 00 00</p>
     <p><a href="#">Mentions légales</a> • <a href="#">CGU</a> • <a href="#">LinkedIn</a></p>
   </footer>
-
 </body>
 </html>
