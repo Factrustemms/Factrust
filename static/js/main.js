@@ -32,12 +32,30 @@ document.getElementById('analyzeForm').addEventListener('submit', async function
     const data = await response.json();
     console.log("✅ Analyse reçue :", data.result);
 
+    // ✅ Extraction sécurisée du JSON dans une réponse qui contient texte + JSON
+    function extractJSONFromText(text) {
+      const jsonStart = text.indexOf("{");
+      const jsonEnd = text.lastIndexOf("}");
+      if (jsonStart !== -1 && jsonEnd !== -1 && jsonEnd > jsonStart) {
+        const jsonString = text.slice(jsonStart, jsonEnd + 1);
+        try {
+          return JSON.parse(jsonString);
+        } catch (e) {
+          console.error("❌ Erreur de parsing JSON :", e);
+          return null;
+        }
+      } else {
+        console.warn("⚠️ Aucun bloc JSON trouvé dans le texte.");
+        return null;
+      }
+    }
+
     let analyse;
-    try {
-      const fullResult = JSON.parse(data.result); // On parse le JSON stringifié
+    const fullResult = extractJSONFromText(data.result);
+    if (fullResult && fullResult.comparaison) {
       analyse = fullResult.comparaison;
-    } catch (err) {
-      throw new Error('Le format de la réponse est invalide.');
+    } else {
+      throw new Error('Le format de la réponse est invalide ou incomplet.');
     }
 
     const faits = analyse.faits_reconnus || [];
@@ -83,5 +101,5 @@ document.getElementById('analyzeForm').addEventListener('submit', async function
   } catch (error) {
     loader.style.display = 'none';
     resultDiv.innerHTML = `<p style="color: red;">❌ ${error.message}</p>`;
-  }
+  }
 });
