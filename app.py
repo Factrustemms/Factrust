@@ -1,10 +1,11 @@
 from flask import Flask, render_template, request, jsonify
 from openai import OpenAI
-import fitz  # PyMuPDF
+import fitz #PyMuPDF
 
 app = Flask(__name__)
 
-client = OpenAI(api_key="sk-proj-...", base_url="https://openrouter.ai/api/v1")
+client=OpenAI(api_key = "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",
+              base_url="https://openrouter.ai/api/v1")
 
 def extract_text_from_pdf(file):
     doc = fitz.open(stream=file.read(), filetype="pdf")
@@ -25,7 +26,7 @@ def analyze():
     text_a = extract_text_from_pdf(pdf_a)
     text_b = extract_text_from_pdf(pdf_b)
 
-    prompt = f"""
+    prompt = f'''
 Tu es un juriste assistant spécialisé en droit français.
 Voici deux extraits de conclusions adverses :
 --- Partie A ---
@@ -38,7 +39,7 @@ Ta mission : comparer ces textes pour établir un tableau en 3 colonnes :
 3. Hypothèses sur la réalité factuelle
 Appuie-toi sur le Code civil, Légifrance, le Code pénal, la jurisprudence majoritaire, les principes issus de Légifrance, Doctrine.fr ou Dalloz.
 Présente ta réponse en format JSON structuré.
-"""
+'''
 
     response = client.chat.completions.create(
         model="meta-llama/llama-4-maverick:free",
