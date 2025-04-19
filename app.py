@@ -117,5 +117,5 @@ Présente ta réponse au format JSON strict, avec cette structure exacte :
 
     return jsonify({"analyse": parsed_result})
 
-if _name_ == '_main_':
+if __name__ == '__main__':
     app.run(debug=True)
