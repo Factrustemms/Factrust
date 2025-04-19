@@ -68,7 +68,7 @@ document.getElementById('analyzeForm').addEventListener('submit', async function
       const tdHypotheses = document.createElement('td');
       const hyp = hypotheses[i];
       if (hyp) {
-        tdHypotheses.innerHTML = <strong>${hyp.hypothese}</strong><br><em>${hyp.fondement}</em>;
+        tdHypotheses.innerHTML = `<strong>${hyp.hypothese}</strong><br><em>${hyp.fondement}</em>`;
       } else {
         tdHypotheses.textContent = '';
       }
