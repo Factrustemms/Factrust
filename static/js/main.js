@@ -41,7 +41,7 @@ document.addEventListener("DOMContentLoaded", () => {
             loader.style.display = "none";
 
             try {
-                const parsed = JSON.parse(data.result);
+                const parsed = data.analyse ? data.analyse : JSON.parse(data.result);
                 console.log("Données analysées :", parsed);
 
                 const faitsReconnu = parsed.comparaison?.faits_reconnus || [];
