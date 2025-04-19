@@ -30,35 +30,45 @@ document.getElementById('analyzeForm').addEventListener('submit', async function
     }
 
     const data = await response.json();
-    console.log("✅ Analyse reçue :", data.analyse);
-    const fullResult = JSON.parse(data.result); // On parse le JSON stringifié
-    const analyse = fullResult.comparaison_des_textes;
+    console.log("✅ Analyse reçue :", data.result);
 
-    // Générer le contenu du tableau
-    const maxRows = Math.max(
-      analyse.faits_reconnus_par_les_deux_parties.length,
-      analyse.points_divergents_entre_les_parties.length,
-      analyse.hypotheses_sur_la_realite_factuelle.length
-    );
+    let analyse;
+    try {
+      const fullResult = JSON.parse(data.result); // On parse le JSON stringifié
+      analyse = fullResult.comparaison;
+    } catch (err) {
+      throw new Error('Le format de la réponse est invalide.');
+    }
+
+    const faits = analyse.faits_reconnus || [];
+    const divergents = analyse.points_divergents || [];
+    const hypotheses = analyse.hypotheses_sur_la_realite_factuelle || [];
+
+    const maxRows = Math.max(faits.length, divergents.length, hypotheses.length);
 
     for (let i = 0; i < maxRows; i++) {
       const row = document.createElement('tr');
 
       // Faits reconnus
       const tdFaits = document.createElement('td');
-      tdFaits.textContent = analyse.faits_reconnus_par_les_deux_parties[i] || '';
+      tdFaits.textContent = faits[i] || '';
       row.appendChild(tdFaits);
 
       // Points divergents
       const tdDivergents = document.createElement('td');
-      tdDivergents.textContent = analyse.points_divergents_entre_les_parties[i] || '';
+      const div = divergents[i];
+      if (div) {
+        tdDivergents.innerHTML = <strong>${div.fait}</strong><br><em>Partie A : ${div.partie_a}</em><br><em>Partie B : ${div.partie_b}</em>;
+      } else {
+        tdDivergents.textContent = '';
+      }
       row.appendChild(tdDivergents);
 
       // Hypothèses
       const tdHypotheses = document.createElement('td');
-      const hyp = analyse.hypotheses_sur_la_realite_factuelle[i];
+      const hyp = hypotheses[i];
       if (hyp) {
-        tdHypotheses.innerHTML = `<strong>${hyp.hypothese}</strong><br><em>${hyp.fondement}</em>`;
+        tdHypotheses.innerHTML = <strong>${hyp.hypothese}</strong><br><em>${hyp.fondement}</em>;
       } else {
         tdHypotheses.textContent = '';
       }
@@ -67,12 +77,11 @@ document.getElementById('analyzeForm').addEventListener('submit', async function
       tableBody.appendChild(row);
     }
 
-    // Activer le bouton PDF et cacher le loader
     loader.style.display = 'none';
     exportBtn.style.display = 'block';
 
   } catch (error) {
     loader.style.display = 'none';
-    resultDiv.innerHTML = `<p style="color: red;">❌ ${error.message}</p>`;
-  }
+    resultDiv.innerHTML = <p style="color: red;">❌ ${error.message}</p>;
+  }
 });
