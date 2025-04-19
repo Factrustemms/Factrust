@@ -21,21 +21,26 @@ def extract_text_from_pdf(file):
 def index():
     return render_template('index.html')
 
-@app.route('/login')
+@app.route('/connexion')
 def login():
-    return render_template('login.html')
+    return render_template('connexion.html')
 
-@app.route('/register')
+@app.route('/inscription')
 def register():
-    return render_template('register.html')
+    return render_template('inscription.html')
 
 @app.route('/dashboard')
 def dashboard():
     return render_template('dashboard.html')
 
-@app.route('/analyze-page')
+@app.route('/analyse')
 def analyze_page():
-    return render_template('analyze.html')
+    return render_template('analyse.html')
+
+# Pour éviter l'erreur 500 sur des pages manquantes
+@app.errorhandler(500)
+def internal_error(error):
+    return "Erreur interne du serveur :("
 
 # === ROUTE D’ANALYSE IA ===
 @app.route('/analyze', methods=['POST'])
