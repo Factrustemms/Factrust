@@ -1,11 +1,13 @@
-from flask import Flask, render_template, request, jsonify
+from flask import Flask, render_template, request, jsonify, send_file
 from openai import OpenAI
-import fitz #PyMuPDF
+import fitz  # PyMuPDF
 
 app = Flask(__name__)
 
-client=OpenAI(api_key = "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",
-              base_url="https://openrouter.ai/api/v1")
+client = OpenAI(
+    api_key="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",
+    base_url="https://openrouter.ai/api/v1"
+)
 
 def extract_text_from_pdf(file):
     doc = fitz.open(stream=file.read(), filetype="pdf")
@@ -14,10 +16,28 @@ def extract_text_from_pdf(file):
         text += page.get_text()
     return text
 
+# === ROUTES FRONTEND ===
 @app.route('/')
 def index():
     return render_template('index.html')
 
+@app.route('/login')
+def login():
+    return render_template('login.html')
+
+@app.route('/register')
+def register():
+    return render_template('register.html')
+
+@app.route('/dashboard')
+def dashboard():
+    return render_template('dashboard.html')
+
+@app.route('/analyze-page')
+def analyze_page():
+    return render_template('analyze.html')
+
+# === ROUTE D’ANALYSE IA ===
 @app.route('/analyze', methods=['POST'])
 def analyze():
     pdf_a = request.files['pdfA']
