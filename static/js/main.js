@@ -1,3 +1,5 @@
+const { jsPDF } = window.jspdf;
+
 document.getElementById('analyzeForm').addEventListener('submit', async function (e) {
   e.preventDefault();
 
