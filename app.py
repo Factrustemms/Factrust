@@ -4,7 +4,7 @@ import requests
 import json
 import os
 
-app = Flask(_name_, static_folder='static', static_url_path='/static')
+app = Flask(__name__, static_folder='static', static_url_path='/static')
 
 API_KEY = os.getenv("OPENROUTER_API_KEY")
 print(f"[DEBUG] Clé API reçue : {API_KEY}")
