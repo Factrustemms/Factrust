@@ -90,7 +90,13 @@ Présente ta réponse en format JSON structuré.
         return jsonify({"error": "Erreur API"}), 500
 
     result = response.json()["choices"][0]["message"]["content"]
-    return jsonify({"analyse": json.loads(result)})
+    try:
+        parsed_result = json.loads(result)
+    except json.JSONDecodeError:
+        print("Erreur de parsing JSON :", result)
+        return jsonify({"error": "Réponse IA invalide"}), 500
+
+    return jsonify({"analyse": parsed_result})
 
 if __name__ == '__main__':
     app.run(debug=True)
