@@ -11,9 +11,10 @@
         <img src="logo_factrust_transparent.png" alt="Logo Factrust" class="logo">
         <nav>
             <ul>
-                <li><a href="index.html">Accueil</a></li>
-                <li><a href="inscription.html">Créer un compte</a></li>
-                <li><a href="analyse.html">Accès plateforme</a></li>
+
+                <li><a href="{{ url_for('index') }}">Accueil</a></li>
+                <li><a href="{{ url_for('register') }}">Créer un compte</a></li>
+                <li><a href="{{ url_for('analyze_page') }}">Accès plateforme</a></li>
                 <li><a href="#">Contact</a></li>
             </ul>
         </nav>
