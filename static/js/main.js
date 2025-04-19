@@ -58,7 +58,7 @@ document.getElementById('analyzeForm').addEventListener('submit', async function
       const tdDivergents = document.createElement('td');
       const div = divergents[i];
       if (div) {
-        tdDivergents.innerHTML = <strong>${div.fait}</strong><br><em>Partie A : ${div.partie_a}</em><br><em>Partie B : ${div.partie_b}</em>;
+        tdDivergents.innerHTML = `<strong>${div.fait}</strong><br><em>Partie A : ${div.partie_a}</em><br><em>Partie B : ${div.partie_b}</em>`;
       } else {
         tdDivergents.textContent = '';
       }
