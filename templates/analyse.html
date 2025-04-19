@@ -8,7 +8,7 @@
 </head>
 <body>
   <header>
-     <img src="{{ url_for('static', filename='images/logo_factrust_transparent.png') }}" alt="Logo Factrust" class="logo"/>
+    <img src="{{ url_for('static', filename='images/logo_factrust_transparent.png') }}" alt="Logo Factrust" class="logo"/>
     <nav>
       <ul>
         <li><a href="{{ url_for('index') }}">Accueil</a></li>
@@ -60,30 +60,8 @@
     </table>
   </section>
 
-  <section class="example-section">
-    <h2>Tableau comparatif</h2>
-    <table>
-      <thead>
-        <tr>
-          <th>Fait</th>
-          <th>Partie A</th>
-          <th>Partie B</th>
-        </tr>
-      </thead>
-      <tbody>
-        <tr>
-          <td>Exemple : Livraison du produit</td>
-          <td>✅ Reconnu</td>
-          <td>⚠️ Contesté</td>
-        </tr>
-        <tr>
-          <td>Exemple : Responsabilité du dommage</td>
-          <td>❌ Négation</td>
-          <td>✅ Reconnaissance</td>
-        </tr>
-      </tbody>
-    </table>
-  </section>
+  <!-- ❌ Tableau statique retiré car il était probablement à usage de démonstration -->
+  <!-- Si tu veux le garder, déplace-le dans un onglet ou sous-section dédiée -->
 
   <footer>
     <p>© 2025 Factrust — Tous droits réservés</p>
@@ -91,11 +69,11 @@
     <p><a href="#">Mentions légales</a> • <a href="#">CGU</a> • <a href="#">LinkedIn</a></p>
   </footer>
 
-  <!-- Script JS -->
-  <!-- html2canvas pour la capture en image du tableau -->
+  <!-- Scripts nécessaires -->
   <script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
-  <!-- jsPDF CDN -->
   <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.legacy.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf-autotable/3.5.28/jspdf.plugin.autotable.min.js"></script>
+
   <!-- Ton script principal -->
   <script src="{{ url_for('static', filename='js/main.js') }}"></script>
 </body>
