@@ -1,76 +1,65 @@
+
 <!DOCTYPE html>
 <html lang="fr">
 <head>
-    <meta charset="UTF-8">
-    <title>Factrust — Analyse IA</title>
-    <style>
-        body { font-family: Arial, sans-serif; margin: 40px; background-color: #f7f9fb; }
-        .pdf-upload { margin-bottom: 20px; }
-        button.analyze-button { background-color: #007b8a; color: white; padding: 10px 20px; border: none; cursor: pointer; }
-        button.analyze-button:hover { background-color: #005f6b; }
-        table { width: 100%; border-collapse: collapse; margin-top: 20px; }
-        th, td { border: 1px solid #ddd; padding: 10px; }
-        th { background-color: #007b8a; color: white; }
-    </style>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Factrust - Donnez forme aux faits</title>
+  <link rel="stylesheet" href="style.css" />
 </head>
 <body>
-    <h1>Factrust — Analyse Juridique IA</h1>
-    <form id="uploadForm" enctype="multipart/form-data">
-        <div class="pdf-upload">
-            <label>Conclusions Partie A :</label>
-            <input type="file" name="pdfA" accept="application/pdf" required><br><br>
+  <header>
+    <img src="logo_factrust_transparent.png" alt="Logo Factrust" class="logo"/>
+    <nav>
+      <ul>
+        <li><a href="index.html">Accueil</a></li>
+        <li><a href="inscription.html">Créer un compte</a></li>
+<li><a href="connexion.html">Se connecter</a></li>
+        <li><a href="analyse.html">Accès plateforme</a></li>
+        <li><a href="#">Contact</a></li>
+      </ul>
+    </nav>
+  </header>
 
-            <label>Conclusions Partie B :</label>
-            <input type="file" name="pdfB" accept="application/pdf" required><br><br>
+  <section class="hero">
+    <h1>Donnez forme aux faits. Clarifiez vos litiges.</h1>
+    <p>Factrust modélise les faits des conclusions adverses pour une meilleure lecture des responsabilités.</p>
+    <a href="analyse.html" class="cta-button">Accéder à la plateforme</a>
+  </section>
 
-            <button type="submit" class="analyze-button">📊 Lancer l'analyse et la modélisation !</button>
-        </div>
-    </form>
+  <section class="how-it-works">
+    <h2>Comment ça marche ?</h2>
+    <div class="steps">
+      <div>
+        <h3>1. Déposez vos conclusions</h3>
+        <p>Chargez les documents PDF des deux parties.</p>
+      </div>
+      <div>
+        <h3>2. Analyse des divergences</h3>
+        <p>Comparez les points d’accord et de désaccord.</p>
+      </div>
+      <div>
+        <h3>3. Synthèse visuelle</h3>
+        <p>Une hypothèse claire et structurée émerge.</p>
+      </div>
+    </div>
+  </section>
 
-    <div id="result"></div>
+  <section class="advantages">
+    <h2>Pourquoi Factrust ?</h2>
+    <ul>
+      <li>⏱ Gain de temps</li>
+      <li>🧠 Lecture claire</li>
+      <li>⚖️ Appui pour magistrat</li>
+    </ul>
+  </section>
 
-    <script>
-        document.getElementById('uploadForm').addEventListener('submit', function(e) {
-            e.preventDefault();
-            const formData = new FormData(this);
-            document.getElementById('result').innerHTML = "⏳ Analyse en cours...";
+  
+  <footer>
+    <p>© 2025 Factrust — Tous droits réservés</p>
+    <p>📧 contact@factrust.fr | 📞 01 00 00 00 00</p>
+    <p><a href="#">Mentions légales</a> • <a href="#">CGU</a> • <a href="#">LinkedIn</a></p>
+  </footer>
 
-            fetch('/analyze', {
-                method: 'POST',
-                body: formData
-            })
-            .then(response => response.json())
-            .then(data => {
-                try {
-                    const result = JSON.parse(data.result);
-                    let html = `
-                        <h3>📄 Résultat de l’analyse :</h3>
-                        <table>
-                            <thead>
-                                <tr>
-                                    <th>Faits reconnus</th>
-                                    <th>Divergences</th>
-                                    <th>Hypothèses</th>
-                                </tr>
-                            </thead>
-                            <tbody>
-                                <tr>
-                                    <td>${Array.isArray(result.faits_reconnus) ? result.faits_reconnus.join('<br>') : result.faits_reconnus}</td>
-                                    <td>${Array.isArray(result.points_divergents) ? result.points_divergents.join('<br>') : result.points_divergents}</td>
-                                    <td>${Array.isArray(result.hypotheses) ? result.hypotheses.join('<br>') : result.hypotheses}</td>
-                                </tr>
-                            </tbody>
-                        </table>`;
-                    document.getElementById('result').innerHTML = html;
-                } catch (error) {
-                    document.getElementById('result').innerHTML = "<pre>" + data.result + "</pre>";
-                }
-            })
-            .catch(error => {
-                document.getElementById('result').innerHTML = "❌ Erreur lors de l’analyse.";
-                console.error(error);
-            });
-        });
-    </script>
 </body>
 </html>
