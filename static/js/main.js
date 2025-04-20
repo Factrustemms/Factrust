@@ -34,10 +34,14 @@ document.getElementById('analyzeForm').addEventListener('submit', async function
 
     // ✅ Fonction robuste d’extraction du bloc JSON
     function extractJSONFromText(text) {
-      const jsonStart = text.indexOf('{');
-      const jsonEnd = text.lastIndexOf('}');
+      // Supprimer les balises Markdown comme ```json et ```
+      const cleanedText = text.replace(/```json/g, '').replace(/```/g, '').trim();
+      
+      const jsonStart = cleanedText.indexOf('{');
+      const jsonEnd = cleanedText.lastIndexOf('}');
       if (jsonStart !== -1 && jsonEnd !== -1 && jsonEnd > jsonStart) {
-        const jsonString = text.slice(jsonStart, jsonEnd + 1).trim();
+        const jsonString = cleanedText.slice(jsonStart, jsonEnd + 1).trim();
+        console.log("🔍 JSON extrait :", jsonString);
         try {
           return JSON.parse(jsonString);
         } catch (e) {
