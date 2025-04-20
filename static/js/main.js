@@ -32,12 +32,12 @@ document.getElementById('analyzeForm').addEventListener('submit', async function
     const data = await response.json();
     console.log("✅ Analyse reçue :", data.result);
 
-    // ✅ Extraction sécurisée du JSON dans une réponse qui contient texte + JSON
+    // ✅ Fonction robuste d’extraction du bloc JSON
     function extractJSONFromText(text) {
-      const jsonStart = text.indexOf("{");
-      const jsonEnd = text.lastIndexOf("}");
+      const jsonStart = text.indexOf('{');
+      const jsonEnd = text.lastIndexOf('}');
       if (jsonStart !== -1 && jsonEnd !== -1 && jsonEnd > jsonStart) {
-        const jsonString = text.slice(jsonStart, jsonEnd + 1);
+        const jsonString = text.slice(jsonStart, jsonEnd + 1).trim();
         try {
           return JSON.parse(jsonString);
         } catch (e) {
@@ -45,19 +45,17 @@ document.getElementById('analyzeForm').addEventListener('submit', async function
           return null;
         }
       } else {
-        console.warn("⚠️ Aucun bloc JSON trouvé dans le texte.");
+        console.warn("⚠️ Aucun bloc JSON détecté.");
         return null;
       }
     }
 
-    let analyse;
-    const fullResult = extractJSONFromText(data.result);
-    if (fullResult && fullResult.comparaison) {
-      analyse = fullResult.comparaison;
-    } else {
-      throw new Error('Le format de la réponse est invalide ou incomplet.');
+    const parsed = extractJSONFromText(data.result);
+    if (!parsed || !parsed.comparaison) {
+      throw new Error("❌ Format JSON invalide ou champ 'comparaison' manquant.");
     }
 
+    const analyse = parsed.comparaison;
     const faits = analyse.faits_reconnus || [];
     const divergents = analyse.points_divergents || [];
     const hypotheses = analyse.hypotheses_sur_la_realite_factuelle || [];
