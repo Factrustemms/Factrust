@@ -87,6 +87,7 @@ Présente ta réponse au format JSON strict, avec cette structure exacte :
     ]
   }}
 }}
+⚠️ Ne produis aucun texte hors du bloc JSON. La réponse doit commencer directement par { et finir par } sans explication, commentaire ou introduction.
 """
 
     headers = {
