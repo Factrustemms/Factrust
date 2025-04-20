@@ -3,7 +3,7 @@ services:
     name: factrust
     env: python
     buildCommand: "pip install -r requirements.txt"
-    startCommand: "gunicorn app:app"
+    startCommand: "gunicorn app:app --timeout 120"
     plan: free
     runtime: python
     pythonVersion: 3.10
