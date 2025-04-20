@@ -35,7 +35,7 @@ document.getElementById('analyzeForm').addEventListener('submit', async function
     // ✅ Fonction robuste d’extraction du bloc JSON
     function extractJSONFromText(text) {
       // Supprimer les balises Markdown comme ```json et ```
-      const cleanedText = text.replace(/```json/g, '').replace(/```/g, '').trim();
+      const cleanedText = text.replace(/```json\s*/gi, '').replace(/```\s*$/gi, '').trim();
       
       const jsonStart = cleanedText.indexOf('{');
       const jsonEnd = cleanedText.lastIndexOf('}');
