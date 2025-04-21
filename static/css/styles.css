@@ -294,3 +294,18 @@ footer {
   background-color: #a3eeb0;
 }
 
+.linkedin-link {
+  display: inline-flex;
+  align-items: center;
+  text-decoration: none;
+}
+
+.linkedin-text {
+  color: #3399ff; /* bleu plus visible */
+  font-weight: 600;
+}
+
+.linkedin-link:hover .linkedin-text {
+  text-decoration: underline;
+}
+
