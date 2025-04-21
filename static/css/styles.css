@@ -241,3 +241,55 @@ footer {
 .formulaire button:hover {
     background-color: #006666;
 }
+
+.btn-container {
+  display: flex;
+  justify-content: center;
+  margin-top: 30px;
+  margin-bottom: 40px;
+}
+
+#analyzeBtn {
+  padding: 12px 24px;
+  font-size: 1rem;
+  font-weight: bold;
+  background-color: #1a73e8;
+  color: white;
+  border: none;
+  border-radius: 8px;
+  cursor: pointer;
+  transition: background 0.3s ease;
+}
+
+#analyzeBtn:hover {
+  background-color: #155ab6;
+}
+
+/* Section des résultats plus haute */
+.results-section {
+  margin-top: 40px;
+  padding: 0 5%;
+}
+
+/* Centrer le bouton export */
+.export-btn-wrapper {
+  display: flex;
+  justify-content: center;
+  margin-top: 20px;
+}
+
+#exportPDFBtn {
+  padding: 10px 20px;
+  background-color: #28a745;
+  color: white;
+  font-weight: bold;
+  border: none;
+  border-radius: 6px;
+  cursor: pointer;
+  transition: background 0.3s ease;
+}
+
+#exportPDFBtn:hover {
+  background-color: #218838;
+}
+
