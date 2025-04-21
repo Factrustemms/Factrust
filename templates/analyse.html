@@ -34,14 +34,15 @@
           <input type="file" id="pdfB" name="pdfB" accept=".pdf" required>
         </label>
       </div>
-
-      <button type="submit" id="analyzeBtn">🚀 Lancer l’analyse et la modélisation !</button>
+      
+      <div class="btn-container">
+        <button type="submit" id="analyzeBtn">🚀 Lancer l’analyse et la modélisation !</button>
+      </div>
     </form>
 
     <!-- Résultat IA -->
     <div id="loader" style="display: none; margin-top: 15px;">⚖️ Analyse en cours...</div>
     <div id="result" style="margin-top: 20px;"></div>
-    <button id="exportPDFBtn" style="display: none; margin-top: 15px;">📄 Exporter les résultats en PDF</button>
   </section>
 
   <section class="results-section">
@@ -58,10 +59,10 @@
         <!-- Données IA injectées ici -->
       </tbody>
     </table>
+    <div class="export-btn-wrapper">
+      <button id="exportPDFBtn" style="display: none;">📄 Exporter les résultats en PDF</button>
+    </div>
   </section>
-
-  <!-- ❌ Tableau statique retiré car il était probablement à usage de démonstration -->
-  <!-- Si tu veux le garder, déplace-le dans un onglet ou sous-section dédiée -->
 
   <footer>
     <p>© 2025 Factrust — Tous droits réservés</p>
