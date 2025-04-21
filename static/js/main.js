@@ -30,36 +30,14 @@ document.getElementById('analyzeForm').addEventListener('submit', async function
     }
 
     const data = await response.json();
-    console.log("✅ Analyse reçue :", data.result);
-
-    // ✅ Fonction robuste d’extraction du bloc JSON
-    function extractJSONFromText(text) {
-      // Supprimer les balises Markdown comme ```json et ```
-      const cleanedText = text.replace(/```json\s*/gi, '').replace(/```\s*$/gi, '').trim();
-      
-      const jsonStart = cleanedText.indexOf('{');
-      const jsonEnd = cleanedText.lastIndexOf('}');
-      if (jsonStart !== -1 && jsonEnd !== -1 && jsonEnd > jsonStart) {
-        const jsonString = cleanedText.slice(jsonStart, jsonEnd + 1).trim();
-        console.log("🔍 JSON extrait :", jsonString);
-        try {
-          return JSON.parse(jsonString);
-        } catch (e) {
-          console.error("❌ Erreur de parsing JSON :", e);
-          return null;
-        }
-      } else {
-        console.warn("⚠️ Aucun bloc JSON détecté.");
-        return null;
-      }
-    }
-
-    const parsed = extractJSONFromText(data.result);
-    if (!parsed || !parsed.comparaison) {
+    // console.log("✅ Analyse reçue :", data.result);
+    console.log("✅ Analyse reçue :", data.analyse);
+    
+    if (!data || !data.comparaison) {
       throw new Error("❌ Format JSON invalide ou champ 'comparaison' manquant.");
     }
 
-    const analyse = parsed.comparaison;
+    const analyse = data.comparaison;
     const faits = analyse.faits_reconnus || [];
     const divergents = analyse.points_divergents || [];
     const hypotheses = analyse.hypotheses_sur_la_realite_factuelle || [];
