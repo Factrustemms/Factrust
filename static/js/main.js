@@ -96,12 +96,12 @@ document.getElementById('exportPDFBtn').addEventListener('click', () => {
   logoImg.onload = function () {
     doc.addImage(logoImg, 'PNG', 150, 10, 40, 25); // (image, format, x, y, width, height)
 
-  // 2. TITRE
+    // 2. TITRE
     doc.setFontSize(18);
     doc.text("Tableau comparatif des faits", 14, 20);
     doc.setFontSize(12);
 
-  // 3. TABLEAU
+    // 3. TABLEAU
     const tableBody = document.getElementById('iaResultsBody');
     const rows = tableBody.querySelectorAll('tr');
     const tableData = [];
@@ -127,8 +127,8 @@ document.getElementById('exportPDFBtn').addEventListener('click', () => {
       ]);
 
       // ✅ Cellule 3 - Hypothèses
-      rowData.push(cells[2]?.innerText.trim() || '')
-      
+      rowData.push(cells[2]?.innerText.trim() || '');
+
       tableData.push(rowData);
     });
 
@@ -146,38 +146,42 @@ document.getElementById('exportPDFBtn').addEventListener('click', () => {
         fillColor: [42, 117, 188],
         halign: 'center',
         fontStyle: 'bold',
-        textColor: 255
+        textColor: 255,
       },
       columnStyles: {
         0: { cellWidth: 60 },
         1: { cellWidth: 60 },
-        2: { cellWidth: 60 }
+        2: { cellWidth: 60 },
       },
       didParseCell: function (data) {
-          // 📝 Appliquer gras aux objets avec style: 'bold'
-          if (Array.isArray(data.cell.raw)) {
-            const isBold = data.cell.raw.some(chunk => chunk.style === 'bold');
-            if (isBold) data.cell.styles.fontStyle = 'bold';
-          }
-        },
-        didDrawCell: function (data) {
-          // 🎯 Fusionner les morceaux de texte si tableau (cellule mixte)
-          if (Array.isArray(data.cell.raw)) {
-            const textChunks = data.cell.raw;
-            let cursorY = data.cell.y + 2;
-
-            textChunks.forEach(chunk => {
-              doc.setFont(undefined, chunk.style || 'normal');
-              doc.text(chunk.text, data.cell.x + 2, cursorY, { maxWidth: data.cell.width - 4 });
-              cursorY += 4.5;
-            });
-
-            data.cell.text = []; // Ne pas dessiner texte par défaut
-          }
+        // 📝 Appliquer gras aux objets avec style: 'bold'
+        if (Array.isArray(data.cell.raw)) {
+          const isBold = data.cell.raw.some(chunk => chunk.style === 'bold');
+          if (isBold) data.cell.styles.fontStyle = 'bold';
         }
+      },
+      didDrawCell: function (data) {
+        // 🎯 Fusionner les morceaux de texte si tableau (cellule mixte)
+        if (Array.isArray(data.cell.raw)) {
+          const textChunks = data.cell.raw;
+          let cursorY = data.cell.y + 2;
+
+          textChunks.forEach(chunk => {
+            doc.setFont(undefined, chunk.style || 'normal');
+            doc.text(chunk.text, data.cell.x + 2, cursorY, {
+              maxWidth: data.cell.width - 4,
+              align: 'justify' // alignement justifié
+            });
+            cursorY += 4.5;
+          });
+
+          data.cell.text = []; // Ne pas dessiner texte par défaut
+        }
+      }
     });
 
     doc.save('Resultats_Factrust.pdf');
-  },  
+  };
 });
+
 
