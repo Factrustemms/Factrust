@@ -35,11 +35,11 @@ document.getElementById('analyzeForm').addEventListener('submit', async function
     if (!data) {
       throw new Error("❌ Format JSON invalide");
     }
-    if (!data.comparaison) {
+    if (!data.analyse.comparaison) {
       throw new Error("❌ Champ 'comparaison' manquant.");
     }
 
-    const analyse = data.comparaison;
+    const analyse = data.analyse.comparaison;
     const faits = analyse.faits_reconnus || [];
     const divergents = analyse.points_divergents || [];
     const hypotheses = analyse.hypotheses_sur_la_realite_factuelle || [];
