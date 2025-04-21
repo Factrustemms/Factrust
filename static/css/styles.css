@@ -246,7 +246,7 @@ footer {
   display: flex;
   justify-content: center;
   margin-top: 30px;
-  margin-bottom: 40px;
+  margin-bottom: 10px;
 }
 
 #analyzeBtn {
@@ -267,7 +267,7 @@ footer {
 
 /* Section des résultats plus haute */
 .results-section {
-  margin-top: 40px;
+  margin-top: 20px;
   padding: 0 5%;
 }
 
@@ -276,12 +276,13 @@ footer {
   display: flex;
   justify-content: center;
   margin-top: 20px;
+  margin-bottom: 30px;
 }
 
 #exportPDFBtn {
   padding: 10px 20px;
-  background-color: #28a745;
-  color: white;
+  background-color: #b2f2bb;
+  color: #155724;
   font-weight: bold;
   border: none;
   border-radius: 6px;
@@ -290,6 +291,6 @@ footer {
 }
 
 #exportPDFBtn:hover {
-  background-color: #218838;
+  background-color: #a3eeb0;
 }
 
