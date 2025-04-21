@@ -30,11 +30,13 @@ document.getElementById('analyzeForm').addEventListener('submit', async function
     }
 
     const data = await response.json();
-    // console.log("✅ Analyse reçue :", data.result);
     console.log("✅ Analyse reçue :", data.analyse);
     
-    if (!data || !data.comparaison) {
-      throw new Error("❌ Format JSON invalide ou champ 'comparaison' manquant.");
+    if (!data) {
+      throw new Error("❌ Format JSON invalide");
+    }
+    if (!data.comparaison) {
+      throw new Error("❌ Champ 'comparaison' manquant.");
     }
 
     const analyse = data.comparaison;
